@@ -52,7 +52,8 @@ class App(ctk.CTk):
 		filetypes = (('fits files', '*.fits'),)	
 		self.filename = tk.filedialog.askopenfilename(
 			title='Open a file',
-			initialdir='../alma_data',
+			# initialdir='../alma_data',
+			initialdir='./example_data',
 			filetypes=filetypes)
 
 
@@ -399,10 +400,12 @@ class App(ctk.CTk):
 										color='w', lw=0.5)
 		self.max_hist = np.nanmax(self.hist_data)
 		self.hist_vmin, = self.ax.plot([self.vmin, self.vmin], [0, self.max_hist], lw=0.5, c='y')
-		self.hist_vmax, = self.ax.plot([self.vmax, self.vmax], [0, self.max_hist], lw=0.5, c='y')
+		self.hist_vmax, = self.ax.plot([self.vmax, self.vmax], [0, self.max_hist], lw=0.5, c='y', 
+										label=f'{self.data_percent}%')
 		self.ax.grid(lw=0.5, ls='--')
 		self.ax.set_xlabel(f"Value ({self.header['BUNIT']})", fontsize = 5, color='cyan')
 		self.ax.set_ylabel(r'log$_{10}$(Counts)', fontsize = 5, color='cyan')
+		self.ax.legend(loc='upper right', fontsize = 8, facecolor='none', labelcolor='yellow')
 		# self.canvas.draw()
 		
 		self.canvas = FigureCanvasTkAgg(self.fig, master=self)
@@ -419,6 +422,9 @@ class App(ctk.CTk):
 		self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)[:-1]
 		self.hist_data = histogram1d(ch_slice, range=[np.nanmin(ch_slice), np.nanmax(ch_slice)], 
 									bins=self.hist_bin_num)
+		# self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)
+		# self.hist_data, temp = np.histogram(ch_slice, bins=self.bins)
+		# self.bins = (self.bins[1:] + self.bins[:-1])/2
 		self.hist_data = np.log10(self.hist_data)
 
 
