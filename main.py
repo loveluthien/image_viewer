@@ -21,15 +21,12 @@ class App(ctk.CTk):
 		self.geo_xy = np.array([1400, 1080])
 		self.geometry(f'{self.geo_xy[0]}x{self.geo_xy[1]}')
 		self.configure(bg='#343434')
-
 		self.canvas00_size = np.array([800, 600])
 		self.zoom_level = 1
 		# self.dpi = self.winfo_fpixels('1i')*2
-
 		self.i_ch = 0 # default channel
 		self.dpi = 200 # default dpi
 		# self.dpi = plt.rcParams['figure.dpi']*2
-
 		self.run()
 
 		
@@ -318,6 +315,7 @@ class App(ctk.CTk):
 		# self.canvas00.draw()
 		self.canvas00.draw_idle()
 
+
 	def update_img_profs(self):
 
 		self.resize_img()
@@ -417,14 +415,14 @@ class App(ctk.CTk):
 
 	def make_hist(self):
 
-		self.hist_bin_num = 1000
+		self.hist_bin_num = 500
 		ch_slice = self.image_cube[0,self.i_ch,:,:].flat[:]
-		self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)[:-1]
-		self.hist_data = histogram1d(ch_slice, range=[np.nanmin(ch_slice), np.nanmax(ch_slice)], 
-									bins=self.hist_bin_num)
-		# self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)
-		# self.hist_data, temp = np.histogram(ch_slice, bins=self.bins)
-		# self.bins = (self.bins[1:] + self.bins[:-1])/2
+		# self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)[:-1]
+		# self.hist_data = histogram1d(ch_slice, range=[np.nanmin(ch_slice), np.nanmax(ch_slice)], 
+		# 							bins=self.hist_bin_num)
+		self.bins = np.linspace(np.nanmin(ch_slice), np.nanmax(ch_slice), self.hist_bin_num+1)
+		self.hist_data, temp = np.histogram(ch_slice, bins=self.bins)
+		self.bins = (self.bins[1:] + self.bins[:-1])/2
 		self.hist_data = np.log10(self.hist_data)
 
 
@@ -468,7 +466,7 @@ class App(ctk.CTk):
 	def init_profs(self, axis='x'):
 
 		grid_pos = {'x': 1, 'y': 2, 'z': 3}
-		xlabels = {'x': 'x (pixel)', 'y': 'x (pixel)', 'z': 'Frequency (GHz)'}
+		xlabels = {'x': 'x (pixel)', 'y': 'y (pixel)', 'z': 'Frequency (GHz)'}
 		
 		# figsize = (2.5, int(self.canvas00_size[1]/self.dpi/2))
 		# figsize = (int(self.canvas00_size[0]/self.dpi * 0.8), int(self.canvas00_size[1]/self.dpi/2))
