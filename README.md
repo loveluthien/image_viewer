@@ -12,4 +12,7 @@ Launch the application by executing ```python main.py```
 - numpy
 - scipy
 - scikit-image
-- fast-histogram
+
+## update
+v1.1.1
+replace fast-histogram with numpy histogram to avoid installing the uncommon package.
